@@ -15,6 +15,7 @@ class Task(models.Model):
         return self.title
 
 
+
 # class TaskUser(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     task = models.ForeignKey(Task, on_delete=models.CASCADE)
