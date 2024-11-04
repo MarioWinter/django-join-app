@@ -15,19 +15,19 @@ class Task(models.Model):
         return self.title
 
 
-class TaskUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    role = models.CharField(max_length=50, blank=True, null=True)
-    addedTask_date = models.DateField(auto_now_add=True)
+# class TaskUser(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+#     role = models.CharField(max_length=50, blank=True, null=True)
+#     addedTask_date = models.DateField(auto_now_add=True)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['user', 'task'], name='unique_user_task')
-        ]
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=['user', 'task'], name='unique_user_task')
+#         ]
 
-    def __str__(self):
-        return f"{self.user.username} - {self.task.title}" 
+#     def __str__(self):
+#         return f"{self.user.username} - {self.task.title}" 
     
     
     
