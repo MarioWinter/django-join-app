@@ -10,11 +10,11 @@ class SubtasksSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     subtasks = SubtasksSerializer(many=True)
-    #user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Task
-        fields = ['id', 'bucket', 'title', 'description', 'assigned', 'duedate', 'prio', 'category', 'subtasks']
+        fields = ['id', 'bucket', 'title', 'description', 'assigned', 'duedate', 'prio', 'category', 'subtasks', 'user']
     
 
     def create(self, validated_data):

@@ -3,9 +3,9 @@ from .views import TaskViewSet
 from rest_framework import routers
 
 router = routers.SimpleRouter()
-router.register(r'tasks', TaskViewSet)
+router.register(r'tasks', TaskViewSet, basename='task')
 
 urlpatterns = [
      path('', include(router.urls)),
-     #path('tasks/', TaskList.as_view(), name='task-list'),
+     
 ]
