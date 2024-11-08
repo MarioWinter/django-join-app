@@ -2,19 +2,19 @@ from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
-from tasks_app.models import Task, Subtasks
-from .serializers import TaskSerializer, SubtasksSerializer
-from .permissions import IsOwnerOrAdmin
+from contacts_app.models import Contact
+from .serializers import ContactSerializer
+# from .permissions import IsOwnerOrAdmin
 
 
-class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-    permission_classes = [IsOwnerOrAdmin]
+class ContactViewSet(viewsets.ModelViewSet):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+    # permission_classes = [IsOwnerOrAdmin]
 
     def get_queryset(self):
         # Filtere die Tasks, sodass nur die des aktuellen Benutzers zurückgegeben werden
-        return Task.objects.filter(user=self.request.user)
+        return Contact.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

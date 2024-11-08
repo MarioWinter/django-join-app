@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'join_app',
     'tasks_app',
+    'contacts_app',
 ]
 
 MIDDLEWARE = [

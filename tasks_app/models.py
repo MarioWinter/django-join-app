@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from contacts_app.models import Contact
 
 
 class Task(models.Model):
@@ -7,8 +8,7 @@ class Task(models.Model):
     bucket = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    assigned = models.JSONField(default=list)
-    #assigned = models.ManyToManyField(Contact, related_name='assigned_tasks', blank=True)
+    assigned = models.ManyToManyField(Contact, related_name='assigned_tasks', blank=True)
     duedate = models.CharField(max_length=10)
     prio = models.CharField(max_length=10)
     category = models.CharField(max_length=100)
