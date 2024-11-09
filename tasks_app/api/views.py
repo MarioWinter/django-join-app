@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 
 from tasks_app.models import Task, Subtasks
 from .serializers import TaskSerializer, SubtasksSerializer
-from .permissions import IsOwnerOrAdmin
+from .permissions import IsOwnerOrAdmin, OnlyDelete
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -18,3 +18,13 @@ class TaskViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class SubtaskViewSet(viewsets.ModelViewSet):
+    queryset = Subtasks.objects.all()
+    serializer_class = SubtasksSerializer
+    permission_classes = [OnlyDelete]
+    
+    # def get_queryset(self):
+    #     return Subtasks.objects.filter(user=self.request.user)
+        
