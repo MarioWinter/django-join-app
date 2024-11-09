@@ -2,8 +2,8 @@ from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
-from tasks_app.models import Task, Subtasks
-from .serializers import TaskSerializer, SubtasksSerializer
+from tasks_app.models import Task, Subtask
+from .serializers import TaskSerializer, SubtaskSerializer
 from .permissions import IsOwnerOrAdmin, OnlyDelete
 
 
@@ -21,10 +21,10 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 
 class SubtaskViewSet(viewsets.ModelViewSet):
-    queryset = Subtasks.objects.all()
-    serializer_class = SubtasksSerializer
+    queryset = Subtask.objects.all()
+    serializer_class = SubtaskSerializer
     permission_classes = [OnlyDelete]
     
-    # def get_queryset(self):
-    #     return Subtasks.objects.filter(user=self.request.user)
+    def get_queryset(self):
+        return Subtask.objects.filter(user=self.request.user)
         

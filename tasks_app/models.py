@@ -17,7 +17,7 @@ class Task(models.Model):
         return self.title
 
 
-class Subtasks(models.Model):
+class Subtask(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='subtasks')
     subdone = models.BooleanField(blank=True, default=False)
     subtitle = models.CharField(max_length=1000)
