@@ -1,12 +1,11 @@
 from django.urls import path, include
-from .views import TaskViewSet, SubtaskViewSet
+from .views import TaskViewSet
 from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register(r'tasks', TaskViewSet, basename='task')
-router.register(r'subtask', SubtaskViewSet, basename='subtask')
+# router.register(r'subtasks', SubtaskViewSet, basename='subtask')
 
 urlpatterns = [
-     path('', include(router.urls)),
-     
+    path('', include(router.urls)),
 ]
