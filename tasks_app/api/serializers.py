@@ -12,20 +12,20 @@ from contacts_app.models import Contact
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    assigned = ContactSerializer(many=True, read_only=True) 
+    #assigned = ContactSerializer(many=True, read_only=True) 
     #subtasks = SubtaskSerializer(many=True, read_only=True)
 
      # Diese Felder werden für POST/PUT/PATCH verwendet
     # subtask_id = serializers.PrimaryKeyRelatedField(
     #     many=True, write_only=True, queryset=Subtask.objects.all(), source='subtasks'
     # )
-    assigned_id = serializers.PrimaryKeyRelatedField(
-        many=True, write_only=True, queryset=Contact.objects.all(), source='assigned'
-    )
+    # assigned_id = serializers.PrimaryKeyRelatedField(
+    #     many=True, write_only=True, queryset=Contact.objects.all(), source='assigned'
+    # )
 
     class Meta:
         model = Task
-        fields = ['id', 'bucket', 'title', 'description', 'assigned', 'duedate', 'prio', 'category', 'subtask', 'user', 'assigned_id']
+        fields = ['id', 'bucket', 'title', 'description', 'assigned', 'duedate', 'prio', 'category', 'subtask', 'user']
         read_only_fields = ['user']
 
     # def create(self, validated_data):
