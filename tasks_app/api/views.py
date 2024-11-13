@@ -2,7 +2,7 @@ from rest_framework import viewsets
 
 from tasks_app.models import Task
 from .serializers import TaskSerializer
-from .permissions import IsOwnerOrAdmin
+from user_auth_app.api.permissions import IsOwnerOrAdmin
 
 from rest_framework import viewsets
 

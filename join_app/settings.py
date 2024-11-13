@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'join_app',
     'tasks_app',
     'contacts_app',
+    'user_auth_app',
 ]
 
 MIDDLEWARE = [

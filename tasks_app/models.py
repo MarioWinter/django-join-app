@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from contacts_app.models import Contact
+# from contacts_app.models import Contact
 
 
 class Task(models.Model):

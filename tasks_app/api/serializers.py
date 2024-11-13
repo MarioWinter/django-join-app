@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
 from tasks_app.models import Task
-from contacts_app.api.serializers import ContactSerializer
-from contacts_app.models import Contact
+# from contacts_app.api.serializers import ContactSerializer
+# from contacts_app.models import Contact
 
 # class SubtaskSerializer(serializers.ModelSerializer):
 #     class Meta:
