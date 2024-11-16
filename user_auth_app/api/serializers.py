@@ -13,7 +13,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'repeated_password']
+        fields = ['username', 'email', 'password', 'repeated_password', 'first_name', 'last_name']
         extra_kwargs = {
             'password': {
                 'write_only': True
@@ -25,6 +25,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         repeated_pw = self.validated_data['repeated_password']
         email = self.validated_data['email']
         username = self.validated_data['username']
+        first_name = self.validated_data['first_name']
+        last_name = self.validated_data['last_name']
         
         if pw != repeated_pw:
             raise serializers.ValidationError({'password-error':'Enter the password correctly!'})
@@ -32,7 +34,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError({'email-error': 'This email address already exists.'})
         
-        account = User(email=email, username=username)
+        account = User(email=email, username=username, first_name=first_name, last_name=last_name)
         account.set_password(pw)
         account.save()
         return account
