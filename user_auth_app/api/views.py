@@ -30,7 +30,7 @@ class RegistrationView(APIView):
             data = {
                 'token' : token.key,
                 'username' : saved_account.username,
-                'email' : saved_account.email
+                'id' : saved_account.id
             }
         else:
             data = serializer.errors
@@ -49,7 +49,7 @@ class CustomLoginVew(ObtainAuthToken):
             data = {
                 'token' : token.key,
                 'username' : user.username,
-                'email' : user.email,
+                'id' : user.id,
                 'full_name' : user.get_full_name()
             }
         else:
