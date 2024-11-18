@@ -5,23 +5,14 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-
-from user_auth_app.models import UserProfile
-from .serializers import UserProfileSerializer, RegistrationSerializer
-
-class UserProfileList(generics.ListCreateAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-
-class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-    
+from .serializers import RegistrationSerializer, LoginSerializer
+  
 class RegistrationView(APIView):
+    serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
     
     def post(self, request):
-        serializer = RegistrationSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         
         data = {}
         if serializer.is_valid():
@@ -30,17 +21,19 @@ class RegistrationView(APIView):
             data = {
                 'token' : token.key,
                 'username' : saved_account.username,
-                'id' : saved_account.id
+                'user_id' : saved_account.id,
+                'email' : saved_account.email
             }
         else:
             data = serializer.errors
         return Response(data)
 
 class CustomLoginVew(ObtainAuthToken):
+    serializer_class = LoginSerializer
     permission_classes = [AllowAny]
     
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={'request': request})
         
         data = {}
         if serializer.is_valid():
@@ -49,8 +42,8 @@ class CustomLoginVew(ObtainAuthToken):
             data = {
                 'token' : token.key,
                 'username' : user.username,
-                'id' : user.id,
-                'full_name' : user.get_full_name()
+                'user_id' : user.id,
+                'email' : user.email
             }
         else:
             data = serializer.errors

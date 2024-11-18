@@ -1,10 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+
+#from django.contrib.auth.models import User
 # from contacts_app.models import Contact
 
 
 class Task(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tasks')
     bucket = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
