@@ -10,7 +10,6 @@ class Task(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     assigned = models.ManyToManyField(Contact, related_name='assigned_tasks', blank=True)
-    #assigned = models.JSONField(default=list)
     duedate = models.CharField(max_length=10)
     prio = models.CharField(max_length=10)
     category = models.CharField(max_length=100)
@@ -21,8 +20,8 @@ class Task(models.Model):
 
 
 class Subtasks(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='subtasks')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtasks")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="subtasks")
     subdone = models.BooleanField(blank=True, default=False)
     subtitle = models.CharField(max_length=1000)
 

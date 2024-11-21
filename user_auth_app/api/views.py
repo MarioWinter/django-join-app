@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
@@ -24,9 +24,9 @@ class RegistrationView(APIView):
                 'user_id' : saved_account.id,
                 'email' : saved_account.email
             }
+            return Response(data, status=status.HTTP_201_CREATED)
         else:
-            data = serializer.errors
-        return Response(data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomLoginVew(ObtainAuthToken):
     serializer_class = LoginSerializer
@@ -45,6 +45,6 @@ class CustomLoginVew(ObtainAuthToken):
                 'user_id' : user.id,
                 'email' : user.email
             }
+            return Response(data, status=status.HTTP_200_OK)
         else:
-            data = serializer.errors
-        return Response(data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

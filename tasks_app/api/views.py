@@ -11,18 +11,20 @@ class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrAdmin]
     
     def get_queryset(self):
-        # return Task.objects.filter(user=self.request.user).prefetch_related('subtasks', 'assigned')
-        return Task.objects.filter(user=self.request.user)
+        return Task.objects.filter(user=self.request.user).prefetch_related('subtasks').all()
+        
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 
 class SubtaskViewSet(viewsets.ModelViewSet):
-    queryset = Subtasks.objects.all()
     serializer_class = SubtaskSerializer
     permission_classes = [IsOwnerOrAdmin]
     
     def get_queryset(self):
         return Subtasks.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
         
