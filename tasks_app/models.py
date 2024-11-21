@@ -13,17 +13,17 @@ class Task(models.Model):
     duedate = models.CharField(max_length=10)
     prio = models.CharField(max_length=10)
     category = models.CharField(max_length=100)
-    #subtask = models.JSONField(default=list)
+    subtasks = models.JSONField(default=list)
     
     def __str__(self):
         return self.title
 
 
-class Subtasks(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtasks")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="subtasks")
-    subdone = models.BooleanField(blank=True, default=False)
-    subtitle = models.CharField(max_length=1000)
+# class Subtasks(models.Model):
+#     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtasks")
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="subtasks")
+#     subdone = models.BooleanField(blank=True, default=False)
+#     subtitle = models.CharField(max_length=1000)
 
-    def __str__(self):
-        return self.subtitle
+#     def __str__(self):
+#         return self.subtitle
