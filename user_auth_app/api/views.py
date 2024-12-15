@@ -6,17 +6,9 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
 
-from .serializers import RegistrationSerializer, LoginSerializer, UserProfileSerializer
-from user_auth_app.api.permissions import IsOwnerOrAdmin
+from .serializers import RegistrationSerializer, LoginSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
-class UserProfileView(viewsets.ModelViewSet):
-    serializer_class = UserProfileSerializer
-    permission_classes = [IsOwnerOrAdmin]
-    
-    # def get_queryset(self):
-    #     return User.objects.filter(user=self.request.user)
 
 
 class RegistrationView(APIView):
