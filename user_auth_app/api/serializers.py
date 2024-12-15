@@ -62,3 +62,8 @@ class LoginSerializer(serializers.ModelSerializer):
 
         attrs['user'] = user
         return attrs
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'username', 'phone', 'bgcolor']

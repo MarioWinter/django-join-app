@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.conf import settings
 
+
 class Contact(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='contacts')
     name = models.CharField(max_length=100)
@@ -14,3 +15,7 @@ class Contact(models.Model):
     
     def __str__(self):
         return self.name
+
+# class ContactUserList(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_combined_set')
+#     contact = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name='contacts_combined_set')

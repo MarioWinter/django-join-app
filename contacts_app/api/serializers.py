@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from contacts_app.models import Contact
+from user_auth_app.api.serializers import CustomUserSerializer
 User = get_user_model()
+
 
 class ContactSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
@@ -18,3 +20,8 @@ class ContactSerializer(serializers.ModelSerializer):
         if Contact.objects.filter(user=user, email=value).exists():
             raise serializers.ValidationError("This email address already exists.")
         return value
+
+
+class ContactUserListSerializer(serializers.Serializer):
+    user = CustomUserSerializer()
+    contacts = ContactSerializer(many=True)
