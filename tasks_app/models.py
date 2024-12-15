@@ -1,11 +1,10 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 from contacts_app.models import Contact
+from django.conf import settings
 
-User = get_user_model()
 
 class Task(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tasks')
     bucket = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -17,13 +16,3 @@ class Task(models.Model):
     
     def __str__(self):
         return self.title
-
-
-# class Subtasks(models.Model):
-#     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtasks")
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="subtasks")
-#     subdone = models.BooleanField(blank=True, default=False)
-#     subtitle = models.CharField(max_length=1000)
-
-#     def __str__(self):
-#         return self.subtitle

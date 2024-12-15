@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from user_auth_app.models import CustomUser
 from django.contrib.auth import authenticate, get_user_model
 
 User = get_user_model()
@@ -27,7 +26,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'password-error':'Enter the password correctly!'})
         
         if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError({'email-error': 'This email address already exists.'})
+            raise serializers.ValidationError({'email-error': 'This E-Mail address already exists.'})
         
         account = User(email=email, username=username)
         account.set_password(pw)
@@ -63,7 +62,7 @@ class LoginSerializer(serializers.ModelSerializer):
         attrs['user'] = user
         return attrs
     
-class CustomUserSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'username']

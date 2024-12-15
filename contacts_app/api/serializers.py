@@ -11,6 +11,10 @@ class ContactSerializer(serializers.ModelSerializer):
         
     def validate_email(self, value):
         user = self.context['request'].user
+        if value == user.email:
+            raise serializers.ValidationError("You cannot add your own email address as a contact.")
+        
+        
         if Contact.objects.filter(user=user, email=value).exists():
-            raise serializers.ValidationError("This E-mail address already exists")
+            raise serializers.ValidationError("This email address already exists.")
         return value
