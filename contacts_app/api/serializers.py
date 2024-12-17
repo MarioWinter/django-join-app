@@ -10,7 +10,7 @@ class ContactSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
     class Meta:
         model = Contact
-        fields = ['id', 'name', 'email', 'phone', 'bgcolor', 'user', 'type']
+        fields = ['id', 'username', 'email', 'phone', 'bgcolor', 'user', 'type']
         
     def validate_email(self, value):
         user = self.context['request'].user

@@ -5,7 +5,7 @@ from django.conf import settings
 
 class Contact(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='contacts')
-    name = models.CharField(max_length=100)
+    username = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(
         max_length=20,
@@ -14,7 +14,7 @@ class Contact(models.Model):
     bgcolor = models.CharField(max_length=100)
     
     def __str__(self):
-        return self.name
+        return self.username
 
 # class ContactUserList(models.Model):
 #     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_combined_set')
