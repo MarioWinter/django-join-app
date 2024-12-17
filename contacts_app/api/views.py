@@ -1,7 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from contacts_app.models import Contact
 from .serializers import ContactSerializer, ContactUserListSerializer
+from user_auth_app.api.serializers import CustomUserSerializer
 from user_auth_app.api.permissions import IsOwnerOrAdmin
 
 
@@ -18,13 +19,16 @@ class ContactViewSet(viewsets.ModelViewSet):
 
 
 class ContactUserListViewSet(viewsets.ModelViewSet):
-    def list(self, request):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+
+    def list(self, request, *args, **kwargs):
         user = request.user
-        contacts = Contact.objects.filter(user=user)
+        contacts = self.get_queryset().filter(user=user)
         
-        serializer = ContactUserListSerializer({
-            'user': user,
-            'contacts': contacts
-        })
-        return Response(serializer.data)
+        user_serializer = CustomUserSerializer(user)
+        contacts_serializer = self.get_serializer(contacts, many=True)
+        
+        combined_data = [user_serializer.data] + contacts_serializer.data
+        return Response(combined_data)
     

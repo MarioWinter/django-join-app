@@ -6,10 +6,11 @@ User = get_user_model()
 
 
 class ContactSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
     class Meta:
         model = Contact
-        fields = ['id', 'name', 'email', 'phone', 'bgcolor', 'user']
+        fields = ['id', 'name', 'email', 'phone', 'bgcolor', 'user', 'type']
         
     def validate_email(self, value):
         user = self.context['request'].user
@@ -21,7 +22,11 @@ class ContactSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("This email address already exists.")
         return value
 
+    def get_type(self, obj):
+        return 'contact'
 
 class ContactUserListSerializer(serializers.Serializer):
-    user = CustomUserSerializer()
-    contacts = ContactSerializer(many=True)
+    def to_representation(self, instance):
+        user_serializer = CustomUserSerializer(instance['user'])
+        contacts_serializer = ContactSerializer(instance['contacts'], many=True)
+        return [user_serializer.data] + contacts_serializer.data
