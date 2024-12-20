@@ -8,22 +8,24 @@ User = get_user_model()
 class ContactSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Contact
         fields = ['id', 'username', 'email', 'phone', 'bgcolor', 'user', 'type']
-        
+
     def validate_email(self, value):
         user = self.context['request'].user
-        if value == user.email:
-            raise serializers.ValidationError("You cannot add your own email address as a contact.")
-        
-        
-        if Contact.objects.filter(user=user, email=value).exists():
-            raise serializers.ValidationError("This email address already exists.")
+        if self.instance is None:
+            if Contact.objects.filter(user=user, email=value).exists():
+                raise serializers.ValidationError("This email address already exists.")
+        else:
+            if Contact.objects.filter(user=user, email=value).exclude(id=self.instance.id).exists():
+                raise serializers.ValidationError("This email address already exists.")
         return value
 
     def get_type(self, obj):
         return 'contact'
+
 
 class ContactUserListSerializer(serializers.Serializer):
     def to_representation(self, instance):
