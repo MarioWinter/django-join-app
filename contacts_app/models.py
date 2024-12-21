@@ -9,7 +9,7 @@ class Contact(models.Model):
     email = models.EmailField()
     phone = models.CharField(
         max_length=20,
-        validators=[RegexValidator(regex=r'^\+?\d{1,3}?\d{4,14}$', message="Enter a valid phone number.")]
+        validators=[RegexValidator(regex = r'^\+?(?:[0-9] ?){6,14}[0-9]$', message="Enter a valid phone number")]
     )
     bgcolor = models.CharField(max_length=100)
     
