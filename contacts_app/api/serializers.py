@@ -24,7 +24,11 @@ class ContactSerializer(serializers.ModelSerializer):
         return value
 
     def get_type(self, obj):
-        return 'contact'
+    
+        if obj.user.email == obj.email and obj.user.username == obj.username:
+            return "user"
+        
+        return "contact"
 
 
 class ContactUserListSerializer(serializers.Serializer):

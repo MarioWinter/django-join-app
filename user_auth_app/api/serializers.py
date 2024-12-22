@@ -65,9 +65,14 @@ class LoginSerializer(serializers.ModelSerializer):
 
 class CustomUserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'email', 'username', 'phone', 'bgcolor', 'type']
+        fields = ['id', 'email', 'username', 'phone', 'bgcolor', 'type', 'user']
         
     def get_type(self, obj):
         return 'user'
+
+    def get_user(self, obj):
+        return obj.id
