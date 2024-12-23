@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from contacts_app.models import Contact
-from tasks_app.api import serializers
+from rest_framework import serializers
 from .serializers import ContactSerializer, ContactUserListSerializer
 from user_auth_app.api.serializers import CustomUserSerializer
 from user_auth_app.api.permissions import IsOwnerOrAdmin
@@ -18,15 +18,19 @@ class ContactViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         
         return Contact.objects.filter(user=self.request.user)
-
+    
     def perform_create(self, serializer):
-       
-        username = self.request.data.get('username')
-        user = User.objects.filter(username=username).first()
+        print(self.request.user)
+        serializer.save(user=self.request.user)
 
-        if not user:
-            raise serializers.ValidationError({"error": "User does not exist."})
-        serializer.save(user=user)
+    # def perform_create(self, serializer):
+       
+    #     username = self.request.data.get('username')
+    #     user = User.objects.filter(username=username).first()
+
+    #     if not user:
+    #         raise serializers.ValidationError({"error": "User does not exist."})
+    #     serializer.save(user=user)
 
 
 

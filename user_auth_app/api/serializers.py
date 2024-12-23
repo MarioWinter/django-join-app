@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
+from user_auth_app.api.utils import generate_random_color
 User = get_user_model()
 
 
@@ -29,7 +30,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError({'email-error': 'This E-Mail address already exists.'})
         
-        account = User(email=email, username=username)
+        account = User(email=email, username=username, bgcolor=generate_random_color())
         account.set_password(pw)
         account.save()
         return account
