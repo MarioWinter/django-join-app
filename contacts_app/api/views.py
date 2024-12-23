@@ -20,18 +20,7 @@ class ContactViewSet(viewsets.ModelViewSet):
         return Contact.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        print(self.request.user)
         serializer.save(user=self.request.user)
-
-    # def perform_create(self, serializer):
-       
-    #     username = self.request.data.get('username')
-    #     user = User.objects.filter(username=username).first()
-
-    #     if not user:
-    #         raise serializers.ValidationError({"error": "User does not exist."})
-    #     serializer.save(user=user)
-
 
 
 # class ContactViewSet(viewsets.ModelViewSet):

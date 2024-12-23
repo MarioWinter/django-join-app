@@ -16,6 +16,6 @@ class ProfilePermission(BasePermission):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        if request.user.is_superuser:
-            return True
-        return request.user == obj
+        if request.method == 'DELETE':
+            return request.user.is_superuser
+        return request.user == obj.user
