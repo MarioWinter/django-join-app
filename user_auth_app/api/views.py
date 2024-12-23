@@ -27,7 +27,8 @@ class RegistrationView(APIView):
                 'token' : token.key,
                 'username' : saved_account.username,
                 'user_id' : saved_account.id,
-                'email' : saved_account.email
+                'email' : saved_account.email,
+                'bgcolor': saved_account.bgcolor
             }
             return Response(data, status=status.HTTP_201_CREATED)
         else:
