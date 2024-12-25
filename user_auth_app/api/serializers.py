@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
 from user_auth_app.api.utils import generate_random_color
+from drf_spectacular.utils import extend_schema_field
 User = get_user_model()
 
 
@@ -120,8 +121,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'email', 'username', 'phone', 'bgcolor', 'type', 'user']
         
-    def get_type(self, obj):
+    @extend_schema_field(str)
+    def get_type(self, obj) -> str:
         return 'user'
 
-    def get_user(self, obj):
+    def get_user(self, obj) -> int:
         return obj.id

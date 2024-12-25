@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from contacts_app.models import Contact
-from user_auth_app.api.serializers import CustomUserSerializer
+from drf_spectacular.utils import extend_schema_field
 User = get_user_model()
 
 
@@ -47,7 +47,8 @@ class ContactSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("This email address already exists.")
         return value
 
-    def get_type(self, obj):
+    @extend_schema_field(str)
+    def get_type(self, obj) -> str:
     
         if obj.user.email == obj.email and obj.user.username == obj.username:
             return "user"

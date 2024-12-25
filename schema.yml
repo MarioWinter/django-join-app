@@ -759,7 +759,7 @@ components:
           type: string
           readOnly: true
         user:
-          type: string
+          type: integer
           readOnly: true
       required:
       - email
@@ -883,7 +883,7 @@ components:
           type: string
           readOnly: true
         user:
-          type: string
+          type: integer
           readOnly: true
     PatchedTask:
       type: object

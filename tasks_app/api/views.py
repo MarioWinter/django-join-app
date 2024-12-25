@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from tasks_app.models import Task
 from .serializers import TaskSerializer
 from user_auth_app.api.permissions import IsOwnerOrAdmin
-
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -22,7 +22,13 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     permission_classes = [IsOwnerOrAdmin]
     
-    def get_queryset(self):
+    
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("id", int, description='The ID of the task')
+        ]
+    )
+    def get_queryset(self) -> Task:
         return Task.objects.filter(user=self.request.user)
         
 
