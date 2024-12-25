@@ -4,6 +4,16 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
 
 class CustomUserManager(BaseUserManager):
+    """
+    Custom manager for CustomUser model.
+    Methods
+    -------
+    create_user(email, password=None, **extra_fields)
+        Creates and returns a user with the given email and password.
+    create_superuser(email, password=None, **extra_fields)
+        Creates and returns a superuser with the given email and password.
+    """
+    
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError(_('The Email field must be set'))
@@ -20,6 +30,23 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """
+    CustomUser model that extends AbstractBaseUser and PermissionsMixin.
+    Attributes:
+        email (EmailField): The email address of the user, used as the unique identifier.
+        username (CharField): The username of the user, optional.
+        first_name (CharField): The first name of the user, optional.
+        last_name (CharField): The last name of the user, optional.
+        phone (CharField): The phone number of the user, optional, validated by a regex.
+        bgcolor (CharField): The background color preference of the user, optional.
+        is_active (BooleanField): Indicates whether the user is active.
+        is_staff (BooleanField): Indicates whether the user has staff privileges.
+        date_joined (DateTimeField): The date and time when the user joined.
+    Methods:
+        __str__(): Returns the email of the user.
+        get_full_name(): Returns the full name of the user.
+        get_short_name(): Returns the short name of the user, which is the username if available, otherwise the part of the email before the '@'.
+    """
     email = models.EmailField(_('email address'), unique=True)
     username = models.CharField(_('username'), max_length=30, blank=True)
     first_name = models.CharField(max_length=30, blank=True)

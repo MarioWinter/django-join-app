@@ -4,6 +4,22 @@ from django.conf import settings
 
 
 class Task(models.Model):
+    """
+    Task model representing a task in the application.
+    Attributes:
+        user (ForeignKey): Reference to the user who created the task.
+        bucket (CharField): The bucket or category to which the task belongs.
+        title (CharField): The title of the task.
+        description (TextField): A detailed description of the task (optional).
+        assigned (ManyToManyField): Contacts assigned to the task (optional).
+        duedate (CharField): The due date of the task in 'YYYY-MM-DD' format.
+        prio (CharField): The priority level of the task.
+        category (CharField): The category of the task.
+        subtasks (JSONField): A list of subtasks associated with the task.
+    Methods:
+        __str__(): Returns the string representation of the task, which is its title.
+    """
+    
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tasks')
     bucket = models.CharField(max_length=100)
     title = models.CharField(max_length=100)

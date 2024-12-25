@@ -1,3 +1,4 @@
+from pydoc import doc
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -13,6 +14,20 @@ User = get_user_model()
 
 
 class RegistrationView(APIView):
+    """
+    Handles user registration.
+    Attributes:
+        serializer_class (RegistrationSerializer): The serializer class used for user registration.
+        permission_classes (list): The list of permission classes that determine access to this view.
+    Methods:
+        post(request):
+            Handles POST requests to register a new user.
+            Validates the provided data using the serializer.
+            If valid, saves the new user account and generates an authentication token.
+            Returns a response with the token, username, user ID, email, and background color.
+            If invalid, returns a response with the validation errors.
+    """
+    
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
     
@@ -35,6 +50,19 @@ class RegistrationView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomLoginView(ObtainAuthToken):
+    """
+    CustomLoginView is a subclass of ObtainAuthToken that handles user login.
+    Attributes:
+        serializer_class (LoginSerializer): The serializer class used for validating login data.
+        permission_classes (list): A list of permission classes that determine access to this view.
+    Methods:
+        post(request):
+            Handles POST requests for user login.
+            Validates the provided credentials using the LoginSerializer.
+            If valid, returns a response containing the authentication token, username, user ID, and email.
+            If invalid, returns a response with the validation errors.
+    """
+    
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
     
@@ -56,6 +84,13 @@ class CustomLoginView(ObtainAuthToken):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserProfileViewSet(viewsets.ModelViewSet):
+    """
+    UserProfileViewSet is a viewset that provides CRUD operations for the User model.
+    It uses the CustomUserSerializer for serialization and ProfilePermission for access control.
+    Methods:
+        get_queryset(self):
+            Returns a queryset of the User model filtered by the current authenticated user's ID.
+    """
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [ProfilePermission]
