@@ -1,0 +1,1052 @@
+openapi: 3.0.3
+info:
+  title: Join API
+  version: 1.0.0
+  description: A simple API for the Kanban WebApp Join
+paths:
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: |-
+        CustomLoginView is a subclass of ObtainAuthToken that handles user login.
+        Attributes:
+            serializer_class (LoginSerializer): The serializer class used for validating login data.
+            permission_classes (list): A list of permission classes that determine access to this view.
+        Methods:
+            post(request):
+                Handles POST requests for user login.
+                Validates the provided credentials using the LoginSerializer.
+                If valid, returns a response containing the authentication token, username, user ID, and email.
+                If invalid, returns a response with the validation errors.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/auth/registration/:
+    post:
+      operationId: auth_registration_create
+      description: |-
+        Handles user registration.
+        Attributes:
+            serializer_class (RegistrationSerializer): The serializer class used for user registration.
+            permission_classes (list): The list of permission classes that determine access to this view.
+        Methods:
+            post(request):
+                Handles POST requests to register a new user.
+                Validates the provided data using the serializer.
+                If valid, saves the new user account and generates an authentication token.
+                Returns a response with the token, username, user ID, email, and background color.
+                If invalid, returns a response with the validation errors.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registration'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Registration'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Registration'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registration'
+          description: ''
+  /api/v1/contacts/:
+    get:
+      operationId: v1_contacts_list
+      description: |-
+        A viewset for viewing and editing contact instances.
+        Attributes:
+            queryset (QuerySet): The queryset of all contact objects.
+            serializer_class (Serializer): The serializer class for contact objects.
+            permission_classes (list): The list of permission classes that apply to this viewset.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of contact objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new contact object with the current user as the owner.
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+          description: ''
+    post:
+      operationId: v1_contacts_create
+      description: |-
+        A viewset for viewing and editing contact instances.
+        Attributes:
+            queryset (QuerySet): The queryset of all contact objects.
+            serializer_class (Serializer): The serializer class for contact objects.
+            permission_classes (list): The list of permission classes that apply to this viewset.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of contact objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new contact object with the current user as the owner.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Contact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+          description: ''
+  /api/v1/contacts/{id}/:
+    get:
+      operationId: v1_contacts_retrieve
+      description: |-
+        A viewset for viewing and editing contact instances.
+        Attributes:
+            queryset (QuerySet): The queryset of all contact objects.
+            serializer_class (Serializer): The serializer class for contact objects.
+            permission_classes (list): The list of permission classes that apply to this viewset.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of contact objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new contact object with the current user as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact.
+        required: true
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+          description: ''
+    put:
+      operationId: v1_contacts_update
+      description: |-
+        A viewset for viewing and editing contact instances.
+        Attributes:
+            queryset (QuerySet): The queryset of all contact objects.
+            serializer_class (Serializer): The serializer class for contact objects.
+            permission_classes (list): The list of permission classes that apply to this viewset.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of contact objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new contact object with the current user as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Contact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+          description: ''
+    patch:
+      operationId: v1_contacts_partial_update
+      description: |-
+        A viewset for viewing and editing contact instances.
+        Attributes:
+            queryset (QuerySet): The queryset of all contact objects.
+            serializer_class (Serializer): The serializer class for contact objects.
+            permission_classes (list): The list of permission classes that apply to this viewset.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of contact objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new contact object with the current user as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContact'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+          description: ''
+    delete:
+      operationId: v1_contacts_destroy
+      description: |-
+        A viewset for viewing and editing contact instances.
+        Attributes:
+            queryset (QuerySet): The queryset of all contact objects.
+            serializer_class (Serializer): The serializer class for contact objects.
+            permission_classes (list): The list of permission classes that apply to this viewset.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of contact objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new contact object with the current user as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this contact.
+        required: true
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/profile/:
+    get:
+      operationId: v1_profile_list
+      description: |-
+        UserProfileViewSet is a viewset that provides CRUD operations for the User model.
+        It uses the CustomUserSerializer for serialization and ProfilePermission for access control.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of the User model filtered by the current authenticated user's ID.
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomUser'
+          description: ''
+    post:
+      operationId: v1_profile_create
+      description: |-
+        UserProfileViewSet is a viewset that provides CRUD operations for the User model.
+        It uses the CustomUserSerializer for serialization and ProfilePermission for access control.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of the User model filtered by the current authenticated user's ID.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+  /api/v1/profile/{id}/:
+    get:
+      operationId: v1_profile_retrieve
+      description: |-
+        UserProfileViewSet is a viewset that provides CRUD operations for the User model.
+        It uses the CustomUserSerializer for serialization and ProfilePermission for access control.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of the User model filtered by the current authenticated user's ID.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this custom user.
+        required: true
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+    put:
+      operationId: v1_profile_update
+      description: |-
+        UserProfileViewSet is a viewset that provides CRUD operations for the User model.
+        It uses the CustomUserSerializer for serialization and ProfilePermission for access control.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of the User model filtered by the current authenticated user's ID.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this custom user.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomUser'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+    patch:
+      operationId: v1_profile_partial_update
+      description: |-
+        UserProfileViewSet is a viewset that provides CRUD operations for the User model.
+        It uses the CustomUserSerializer for serialization and ProfilePermission for access control.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of the User model filtered by the current authenticated user's ID.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this custom user.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomUser'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomUser'
+          description: ''
+    delete:
+      operationId: v1_profile_destroy
+      description: |-
+        UserProfileViewSet is a viewset that provides CRUD operations for the User model.
+        It uses the CustomUserSerializer for serialization and ProfilePermission for access control.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of the User model filtered by the current authenticated user's ID.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this custom user.
+        required: true
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/tasks/:
+    get:
+      operationId: v1_tasks_list
+      description: |-
+        TaskViewSet is a viewset for handling CRUD operations on Task objects.
+        Attributes:
+            serializer_class (TaskSerializer): The serializer class used for validating and deserializing input, and for serializing output.
+            permission_classes (list): A list of permission classes that determine whether a user can access the view.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of Task objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new Task object with the current user set as the owner.
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+          description: ''
+    post:
+      operationId: v1_tasks_create
+      description: |-
+        TaskViewSet is a viewset for handling CRUD operations on Task objects.
+        Attributes:
+            serializer_class (TaskSerializer): The serializer class used for validating and deserializing input, and for serializing output.
+            permission_classes (list): A list of permission classes that determine whether a user can access the view.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of Task objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new Task object with the current user set as the owner.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+  /api/v1/tasks/{id}/:
+    get:
+      operationId: v1_tasks_retrieve
+      description: |-
+        TaskViewSet is a viewset for handling CRUD operations on Task objects.
+        Attributes:
+            serializer_class (TaskSerializer): The serializer class used for validating and deserializing input, and for serializing output.
+            permission_classes (list): A list of permission classes that determine whether a user can access the view.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of Task objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new Task object with the current user set as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+    put:
+      operationId: v1_tasks_update
+      description: |-
+        TaskViewSet is a viewset for handling CRUD operations on Task objects.
+        Attributes:
+            serializer_class (TaskSerializer): The serializer class used for validating and deserializing input, and for serializing output.
+            permission_classes (list): A list of permission classes that determine whether a user can access the view.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of Task objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new Task object with the current user set as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+    patch:
+      operationId: v1_tasks_partial_update
+      description: |-
+        TaskViewSet is a viewset for handling CRUD operations on Task objects.
+        Attributes:
+            serializer_class (TaskSerializer): The serializer class used for validating and deserializing input, and for serializing output.
+            permission_classes (list): A list of permission classes that determine whether a user can access the view.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of Task objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new Task object with the current user set as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTask'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+    delete:
+      operationId: v1_tasks_destroy
+      description: |-
+        TaskViewSet is a viewset for handling CRUD operations on Task objects.
+        Attributes:
+            serializer_class (TaskSerializer): The serializer class used for validating and deserializing input, and for serializing output.
+            permission_classes (list): A list of permission classes that determine whether a user can access the view.
+        Methods:
+            get_queryset(self):
+                Returns a queryset of Task objects filtered by the current user.
+            perform_create(self, serializer):
+                Saves a new Task object with the current user set as the owner.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Contact:
+      type: object
+      description: |-
+        Serializer for the Contact model.
+        This serializer handles the serialization and deserialization of Contact instances,
+        including custom validation for the email field and a method to determine the type
+        of contact.
+        Attributes:
+            type (SerializerMethodField): A custom field to determine the type of contact.
+            user (PrimaryKeyRelatedField): A field to associate the contact with a user.
+        Methods:
+            validate_email(value):
+                Validates that the email address is unique for the user.
+                Args:
+                    value (str): The email address to validate.
+                Returns:
+                    str: The validated email address.
+                Raises:
+                    serializers.ValidationError: If the email address already exists for the user.
+            get_type(obj):
+                Determines the type of contact based on the user's email and username.
+                Args:
+                    obj (Contact): The contact instance.
+                Returns:
+                    str: "user" if the contact's email and username match the user's, otherwise "contact".
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          nullable: true
+          pattern: ^\+?(?:[0-9] ?){6,14}[0-9]$
+          maxLength: 20
+        bgcolor:
+          type: string
+          maxLength: 100
+        user:
+          type: integer
+        type:
+          type: string
+          readOnly: true
+      required:
+      - bgcolor
+      - email
+      - id
+      - type
+      - username
+    CustomUser:
+      type: object
+      description: |-
+        CustomUserSerializer is a ModelSerializer for the User model.
+        Fields:
+            - id: The unique identifier for the user.
+            - email: The email address of the user.
+            - username: The username of the user.
+            - phone: The phone number of the user.
+            - bgcolor: The background color associated with the user.
+            - type: A custom field that always returns 'user'.
+            - user: A custom field that returns the user's id.
+        Methods:
+            - get_type(obj): Returns the string 'user'.
+            - get_user(obj): Returns the id of the user.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        username:
+          type: string
+          maxLength: 30
+        phone:
+          type: string
+          nullable: true
+          pattern: ^\+?\d{1,3}?\d{4,14}$
+          maxLength: 20
+        bgcolor:
+          type: string
+          nullable: true
+          maxLength: 100
+        type:
+          type: string
+          readOnly: true
+        user:
+          type: string
+          readOnly: true
+      required:
+      - email
+      - id
+      - type
+      - user
+    Login:
+      type: object
+      description: |-
+        LoginSerializer is a serializer for handling user login requests.
+        Fields:
+            email (EmailField): The email address of the user.
+            password (CharField): The password of the user, styled as a password input and write-only.
+        Meta:
+            model (User): The User model that this serializer is based on.
+            fields (list): The fields to include in the serialization, which are 'email' and 'password'.
+        Methods:
+            validate(attrs):
+                Validates the provided email and password.
+                Authenticates the user with the given credentials.
+                Raises a ValidationError if authentication fails or if email and password are not provided.
+                Adds the authenticated user to the validated data.
+                Returns:
+                    dict: The validated data including the authenticated user.
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+    PatchedContact:
+      type: object
+      description: |-
+        Serializer for the Contact model.
+        This serializer handles the serialization and deserialization of Contact instances,
+        including custom validation for the email field and a method to determine the type
+        of contact.
+        Attributes:
+            type (SerializerMethodField): A custom field to determine the type of contact.
+            user (PrimaryKeyRelatedField): A field to associate the contact with a user.
+        Methods:
+            validate_email(value):
+                Validates that the email address is unique for the user.
+                Args:
+                    value (str): The email address to validate.
+                Returns:
+                    str: The validated email address.
+                Raises:
+                    serializers.ValidationError: If the email address already exists for the user.
+            get_type(obj):
+                Determines the type of contact based on the user's email and username.
+                Args:
+                    obj (Contact): The contact instance.
+                Returns:
+                    str: "user" if the contact's email and username match the user's, otherwise "contact".
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          nullable: true
+          pattern: ^\+?(?:[0-9] ?){6,14}[0-9]$
+          maxLength: 20
+        bgcolor:
+          type: string
+          maxLength: 100
+        user:
+          type: integer
+        type:
+          type: string
+          readOnly: true
+    PatchedCustomUser:
+      type: object
+      description: |-
+        CustomUserSerializer is a ModelSerializer for the User model.
+        Fields:
+            - id: The unique identifier for the user.
+            - email: The email address of the user.
+            - username: The username of the user.
+            - phone: The phone number of the user.
+            - bgcolor: The background color associated with the user.
+            - type: A custom field that always returns 'user'.
+            - user: A custom field that returns the user's id.
+        Methods:
+            - get_type(obj): Returns the string 'user'.
+            - get_user(obj): Returns the id of the user.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        username:
+          type: string
+          maxLength: 30
+        phone:
+          type: string
+          nullable: true
+          pattern: ^\+?\d{1,3}?\d{4,14}$
+          maxLength: 20
+        bgcolor:
+          type: string
+          nullable: true
+          maxLength: 100
+        type:
+          type: string
+          readOnly: true
+        user:
+          type: string
+          readOnly: true
+    PatchedTask:
+      type: object
+      description: |-
+        TaskSerializer is a ModelSerializer for the Task model. It serializes and deserializes Task instances.
+        Fields:
+            - id: IntegerField, read-only. The primary key of the task.
+            - bucket: CharField. The bucket to which the task belongs.
+            - title: CharField. The title of the task.
+            - description: CharField. The description of the task.
+            - assigned: ContactSerializer, read-only. A list of contacts assigned to the task.
+            - assigned_id: PrimaryKeyRelatedField, write-only. A list of primary keys of contacts to be assigned to the task.
+            - duedate: DateTimeField. The due date of the task.
+            - prio: IntegerField. The priority of the task.
+            - category: CharField. The category of the task.
+            - subtasks: CharField. The subtasks of the task.
+            - user: UserField, read-only. The user who created the task.
+        Meta:
+            - model: Task. The model that is being serialized.
+            - fields: List of fields to be included in the serialization.
+            - read_only_fields: List of fields that are read-only.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bucket:
+          type: string
+          maxLength: 100
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        assigned:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          readOnly: true
+        assigned_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        duedate:
+          type: string
+          maxLength: 10
+        prio:
+          type: string
+          maxLength: 10
+        category:
+          type: string
+          maxLength: 100
+        subtasks: {}
+        user:
+          type: integer
+          readOnly: true
+    Registration:
+      type: object
+      description: |-
+        Serializer for user registration.
+        This serializer handles user registration by validating the input data,
+        including password confirmation and email uniqueness. It also generates
+        a random background color for the user.
+        Attributes:
+            repeated_password (serializers.CharField): Field for confirming the password.
+        Meta:
+            model (User): The user model to be serialized.
+            fields (list): List of fields to be included in the serialization.
+            extra_kwargs (dict): Additional keyword arguments for the fields.
+        Methods:
+            save(): Validates the input data, checks for password match and email uniqueness,
+                    creates a new user with the provided data, and returns the created user instance.
+      properties:
+        username:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        repeated_password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+      - repeated_password
+    Task:
+      type: object
+      description: |-
+        TaskSerializer is a ModelSerializer for the Task model. It serializes and deserializes Task instances.
+        Fields:
+            - id: IntegerField, read-only. The primary key of the task.
+            - bucket: CharField. The bucket to which the task belongs.
+            - title: CharField. The title of the task.
+            - description: CharField. The description of the task.
+            - assigned: ContactSerializer, read-only. A list of contacts assigned to the task.
+            - assigned_id: PrimaryKeyRelatedField, write-only. A list of primary keys of contacts to be assigned to the task.
+            - duedate: DateTimeField. The due date of the task.
+            - prio: IntegerField. The priority of the task.
+            - category: CharField. The category of the task.
+            - subtasks: CharField. The subtasks of the task.
+            - user: UserField, read-only. The user who created the task.
+        Meta:
+            - model: Task. The model that is being serialized.
+            - fields: List of fields to be included in the serialization.
+            - read_only_fields: List of fields that are read-only.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bucket:
+          type: string
+          maxLength: 100
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        assigned:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          readOnly: true
+        assigned_id:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        duedate:
+          type: string
+          maxLength: 10
+        prio:
+          type: string
+          maxLength: 10
+        category:
+          type: string
+          maxLength: 100
+        subtasks: {}
+        user:
+          type: integer
+          readOnly: true
+      required:
+      - assigned
+      - bucket
+      - category
+      - duedate
+      - id
+      - prio
+      - title
+      - user
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

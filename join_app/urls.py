@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from user_auth_app.views import redirect_to_admin
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
     path('', redirect_to_admin, name='root'),
@@ -25,4 +26,7 @@ urlpatterns = [
     path('api/v1/', include('contacts_app.api.urls')),
     path('api/auth/', include('user_auth_app.api.urls')),
     path('api-auth', include('rest_framework.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
