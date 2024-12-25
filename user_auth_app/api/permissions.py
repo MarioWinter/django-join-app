@@ -1,4 +1,3 @@
-from xmlrpc.client import Boolean
 from rest_framework.permissions import BasePermission
 
 class IsOwnerOrAdmin(BasePermission):
