@@ -16,10 +16,8 @@ class IsOwnerOrAdmin(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_superuser:
             return True
-        # Überprüfen, ob das Objekt ein Profil ist und ob der Benutzer der Besitzer ist
         if hasattr(obj, 'user'):
             return request.user == obj.user
-        # Fallback für den Fall, dass das Objekt der Benutzer selbst ist
         return request.user == obj
 
 
@@ -41,8 +39,6 @@ class ProfilePermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == 'DELETE':
             return request.user.is_superuser
-        # Überprüfen, ob das Objekt ein Profil ist und ob der Benutzer der Besitzer ist
         if hasattr(obj, 'user'):
             return request.user == obj.user
-        # Fallback für den Fall, dass das Objekt der Benutzer selbst ist
         return request.user == obj
