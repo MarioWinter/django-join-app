@@ -2,7 +2,7 @@ from pydoc import doc
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-from user_auth_app.api.permissions import ProfilePermission
+from user_auth_app.api.permissions import ProfilePermission, IsOwnerOrAdmin
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
