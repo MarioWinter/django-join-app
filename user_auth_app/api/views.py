@@ -77,7 +77,8 @@ class CustomLoginView(ObtainAuthToken):
                 'token' : token.key,
                 'username' : user.username,
                 'user_id' : user.id,
-                'email' : user.email
+                'email' : user.email,
+                'bgcolor': user.bgcolor
             }
             return Response(data, status=status.HTTP_200_OK)
         else:
