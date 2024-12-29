@@ -33,3 +33,5 @@ class ContactListTest(APITestCase):
         #print("Expected data:", expected_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, expected_data)
+        self.assertNotEqual(response.data.get('type', None), 'user')
+
