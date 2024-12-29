@@ -21,4 +21,15 @@ class ContactListTest(APITestCase):
     def test_get_contact_detail(self):
         url = reverse('contact-detail', kwargs={'pk': self.contact.id})
         response = self.client.get(url)
+        expected_data = {
+            'id': self.contact.id,
+            'username': 'Max Mustermann',
+            'email': 'maxmustermann@gmail.com',
+            'phone': '+4934567890',
+            'bgcolor': '#FFFFFF',
+            'user': self.user.id,
+            'type': 'contact'}
+        #print("Response data:", response.data)
+        #print("Expected data:", expected_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, expected_data)
