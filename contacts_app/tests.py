@@ -38,7 +38,7 @@ class ContactListTest(APITestCase):
         self.assertEqual(response.data, expected_data)
         self.assertNotEqual(response.data.get('type', None), 'user')
         
-    def test_post_contact_list(self):
+    def test_create_contact_list(self):
         url = reverse('contact-list')
         data = {
             'username': 'Cody Mustermann',
@@ -50,4 +50,20 @@ class ContactListTest(APITestCase):
         self.assertEqual(Contact.objects.count(), 2)
         new_contact = Contact.objects.get(username='Cody Mustermann')
         self.assertEqual(new_contact.email, 'codymustermann@gmail.com')
+        
+        
+    def test_create_contact_list_unauthorized(self):
+        """
+        Tests whether the creation of a contact fails when the CSRF token is missing.
+        """
+        csrf_client = APIClient(enforce_csrf_checks=True)
+        url = reverse('contact-list')
+        data = {
+            'username': 'unauthorized contact',
+            'email': 'unauthorized@gmail.com',
+            'phone': '+1234567890',
+            'bgcolor': '#FFFFFF',}
+        response = csrf_client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
