@@ -13,7 +13,7 @@ class ContactListTest(APITestCase):
         self.user = User.objects.create_user(email='testuser@gmail.com', password='werte12345')
         self.token = Token.objects.create(user=self.user)
         self.contact = Contact.objects.create(username='Max Mustermann', user=self.user, email="maxmustermann@gmail.com", bgcolor="#FFFFFF", phone="+4934567890")
-        self.client = APIClient()
+        self.client = APIClient(enforce_csrf_checks=True)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
     
     def test_get_contacts_list(self):
