@@ -91,14 +91,35 @@ class ContactListTest(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Contact.objects.count(), 0)
-
     
-    #permission test
+    #regex validation tests
+    
+    #permission tests
     def test_get_contacts_list_unauthorized_permission(self):
         url = reverse('contact-list')
         response = self.client2.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+    
+    def test_create_contact_list_unauthorized_permission(self):
+        url = reverse('contact-list')
+        data = {
+            'username': 'Jon Mustermann',
+            'email': 'jonmustermann@gmail.com',
+            'phone': '+4934567890',
+            'bgcolor': '#FFFFFF',}
+        response = self.client2.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['username'], 'Jon Mustermann')
+        new_contact = Contact.objects.get(username='Jon Mustermann')
+        self.assertEqual(new_contact.email, 'jonmustermann@gmail.com')
+        self.assertEqual(Contact.objects.count(), 2)
+        
+        
+    def test_get_contact_detail_unauthorized_permission(self):
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        response = self.client2.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         
     
     def test_delete_contect_detail_unauthorized_permission(self):
