@@ -95,13 +95,13 @@ class ContactListTest(APITestCase):
     #regex validation tests
     
     #permission tests
-    def test_get_contacts_list_unauthorized_permission(self):
+    def test_get_contacts_list_no_permission(self):
         url = reverse('contact-list')
         response = self.client2.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
     
-    def test_create_contact_list_unauthorized_permission(self):
+    def test_create_contact_list_no_permission(self):
         url = reverse('contact-list')
         data = {
             'username': 'Jon Mustermann',
@@ -116,13 +116,13 @@ class ContactListTest(APITestCase):
         self.assertEqual(Contact.objects.count(), 2)
         
         
-    def test_get_contact_detail_unauthorized_permission(self):
+    def test_get_contact_detail_no_permission(self):
         url = reverse('contact-detail', kwargs={'pk': self.contact.id})
         response = self.client2.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
     
     
-    def test_update_contact_detail_unauthorized_permission(self):
+    def test_update_contact_detail_no_permission(self):
         url = reverse('contact-detail', kwargs={'pk': self.contact.id})
         data = {
             'username': 'Maxi Mustermann',
@@ -133,9 +133,18 @@ class ContactListTest(APITestCase):
         }
         response = self.client2.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+     
+    def test_patch_contact_detail_no_permission(self):
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        data = {
+            'username': 'Maxi Mustermann',
+        }
+        response = self.client2.patch(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         
     
-    def test_delete_contect_detail_unauthorized_permission(self):
+    def test_delete_contect_detail_no_permission(self):
         url = reverse('contact-detail', kwargs={'pk': self.contact.id})
         response = self.client2.delete(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
