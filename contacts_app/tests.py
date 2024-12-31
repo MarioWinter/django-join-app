@@ -120,6 +120,19 @@ class ContactListTest(APITestCase):
         url = reverse('contact-detail', kwargs={'pk': self.contact.id})
         response = self.client2.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+    
+    def test_update_contact_detail_unauthorized_permission(self):
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        data = {
+            'username': 'Maxi Mustermann',
+            'email': 'maximustermann@gmail.com',
+            'phone': '+4934567890',
+            'bgcolor': '#FFFFFF',
+            'user': self.user.id,
+        }
+        response = self.client2.put(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         
     
     def test_delete_contect_detail_unauthorized_permission(self):
