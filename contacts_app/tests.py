@@ -150,24 +150,51 @@ class ContactListTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
       
-    
-    
-    
-    
-    
     #unauthorized user
+    def test_get_contacts_list_unauthorized(self):
+        self.csrf_client = APIClient(enforce_csrf_checks=True)
+        url = reverse('contact-list')
+        response = self.csrf_client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    
+    def test_get_contact_detail_unauthorized(self):
+        self.csrf_client = APIClient(enforce_csrf_checks=True)
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        response = self.csrf_client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+        
     def test_create_contact_list_unauthorized(self):
         """
         Tests whether the creation of a contact fails when the CSRF token is missing.
         """
-        csrf_client = APIClient(enforce_csrf_checks=True)
+        self.csrf_client = APIClient(enforce_csrf_checks=True)
         url = reverse('contact-list')
         data = {
             'username': 'unauthorized contact',
             'email': 'unauthorized@gmail.com',
             'phone': '+1234567890',
             'bgcolor': '#FFFFFF',}
-        response = csrf_client.post(url, data, format='json')
+        response = self.csrf_client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    
+    
+    def test_update_contact_detail_unauthorized(self):
+        self.csrf_client = APIClient(enforce_csrf_checks=True)
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        data = {
+            'username': 'Maxi Mustermann',
+            'email': 'maximustermann@gmail.com',
+            'phone': '+4934567890',
+            'bgcolor': '#FFFFFF',
+            'user': self.user.id,
+        }
+        response = self.csrf_client.put(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        
+        
+    
 
 
