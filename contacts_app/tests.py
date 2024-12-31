@@ -16,10 +16,12 @@ class ContactListTest(APITestCase):
         self.client = APIClient(enforce_csrf_checks=True)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
     
+    
     def test_get_contacts_list(self):
         url = reverse('contact-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
         
     def test_get_contact_detail(self):
         url = reverse('contact-detail', kwargs={'pk': self.contact.id})
@@ -37,6 +39,7 @@ class ContactListTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, expected_data)
         self.assertNotEqual(response.data.get('type', None), 'user')
+      
         
     def test_create_contact_list(self):
         url = reverse('contact-list')
@@ -51,9 +54,9 @@ class ContactListTest(APITestCase):
         new_contact = Contact.objects.get(username='Cody Mustermann')
         self.assertEqual(new_contact.email, 'codymustermann@gmail.com')
     
+    
     def test_update_contact_detail(self):
         url = reverse('contact-detail', kwargs={'pk': self.contact.id})
-        response = self.client.put(url)
         data = {
             'username': 'Maxi Mustermann',
             'email': 'maximustermann@gmail.com',
@@ -66,10 +69,18 @@ class ContactListTest(APITestCase):
         self.assertEqual(Contact.objects.count(), 1)
         self.assertEqual(Contact.objects.get().username, 'Maxi Mustermann')
         self.assertEqual(Contact.objects.get().email, 'maximustermann@gmail.com')
-    
-    
-    
-    
+        
+        
+    def test_patch_contact_detail(self):
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        data = {
+            'username': 'Mario Mustermann',
+        }
+        response = self.client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Contact.objects.count(), 1)
+        self.assertEqual(Contact.objects.get().username, 'Mario Mustermann')
+
     
     #unauthorized user 
     def test_create_contact_list_unauthorized(self):
