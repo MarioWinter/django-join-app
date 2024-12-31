@@ -192,6 +192,15 @@ class ContactListTest(APITestCase):
         }
         response = self.csrf_client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+    def test_patch_contact_detail_unauthorized(self):
+        self.csrf_client = APIClient(enforce_csrf_checks=True)
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        data = {
+            'username': 'Maxi Mustermann',
+        }
+        response = self.csrf_client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
         
         
