@@ -15,12 +15,18 @@ class ContactListTest(APITestCase):
         self.contact = Contact.objects.create(username='Max Mustermann', user=self.user, email="maxmustermann@gmail.com", bgcolor="#FFFFFF", phone="+4934567890")
         self.client = APIClient(enforce_csrf_checks=True)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        
+        self.user2 = User.objects.create_user(email='testuser2@gmail.com', password='werte12345')
+        self.token2 = Token.objects.create(user=self.user2)
+        self.client2 = APIClient(enforce_csrf_checks=True)
+        self.client2.credentials(HTTP_AUTHORIZATION='Token ' + self.token2.key)
     
     
     def test_get_contacts_list(self):
         url = reverse('contact-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
         
         
     def test_get_contact_detail(self):
@@ -34,8 +40,6 @@ class ContactListTest(APITestCase):
             'bgcolor': '#FFFFFF',
             'user': self.user.id,
             'type': 'contact'}
-        #print("Response data:", response.data)
-        #print("Expected data:", expected_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, expected_data)
         self.assertNotEqual(response.data.get('type', None), 'user')
@@ -80,9 +84,35 @@ class ContactListTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Contact.objects.count(), 1)
         self.assertEqual(Contact.objects.get().username, 'Mario Mustermann')
+    
+        
+    def test_delete_contact_detail(self):
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Contact.objects.count(), 0)
 
     
-    #unauthorized user 
+    #permission test
+    def test_get_contacts_list_unauthorized_permission(self):
+        url = reverse('contact-list')
+        response = self.client2.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
+        
+    
+    def test_delete_contect_detail_unauthorized_permission(self):
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        response = self.client2.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+      
+    
+    
+    
+    
+    
+    #unauthorized user
     def test_create_contact_list_unauthorized(self):
         """
         Tests whether the creation of a contact fails when the CSRF token is missing.
