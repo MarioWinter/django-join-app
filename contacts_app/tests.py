@@ -50,8 +50,28 @@ class ContactListTest(APITestCase):
         self.assertEqual(Contact.objects.count(), 2)
         new_contact = Contact.objects.get(username='Cody Mustermann')
         self.assertEqual(new_contact.email, 'codymustermann@gmail.com')
-        
-        
+    
+    def test_update_contact_detail(self):
+        url = reverse('contact-detail', kwargs={'pk': self.contact.id})
+        response = self.client.put(url)
+        data = {
+            'username': 'Maxi Mustermann',
+            'email': 'maximustermann@gmail.com',
+            'phone': '+4934567890',
+            'bgcolor': '#FFFFFF',
+            'user': self.user.id,
+        }
+        response = self.client.put(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Contact.objects.count(), 1)
+        self.assertEqual(Contact.objects.get().username, 'Maxi Mustermann')
+        self.assertEqual(Contact.objects.get().email, 'maximustermann@gmail.com')
+    
+    
+    
+    
+    
+    #unauthorized user 
     def test_create_contact_list_unauthorized(self):
         """
         Tests whether the creation of a contact fails when the CSRF token is missing.
