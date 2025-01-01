@@ -174,7 +174,9 @@ REST_FRAMEWORK = {
         'anon': '100/day',
         'user': '1000/day',
         'contact': '6/day',
+        'contact-get': '5/day',
         'contact-post': '10/day'
+        
     }
 }
 
