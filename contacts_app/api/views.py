@@ -5,6 +5,7 @@ from rest_framework import serializers
 from .serializers import ContactSerializer
 from user_auth_app.api.serializers import CustomUserSerializer
 from user_auth_app.api.permissions import IsOwnerOrAdmin
+from .throttling import ContactThrottle 
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -24,7 +25,7 @@ class ContactViewSet(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
     permission_classes = [IsOwnerOrAdmin]
-
+    throttle_classes = [ContactThrottle]
     def get_queryset(self):
         return Contact.objects.filter(user=self.request.user)
     
