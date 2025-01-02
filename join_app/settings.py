@@ -171,11 +171,11 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/day',
-        'user': '1000/day',
-        'contact': '6/day',
-        'contact-get': '5/day',
-        'contact-post': '10/day'
+        'anon': '5/second',
+        'user': '20/second',
+        'contact': '20/second',
+        'contact-get': '20/second',
+        'contact-post': '20/second'
         
     }
 }

@@ -1,11 +1,8 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from rest_framework import viewsets
 from contacts_app.models import Contact
-from rest_framework import serializers
 from .serializers import ContactSerializer
-from user_auth_app.api.serializers import CustomUserSerializer
 from user_auth_app.api.permissions import IsOwnerOrAdmin
-from .throttling import ContactThrottle, ContactGetThrottle, ContactPostThrottle
+from .throttling import ContactThrottle
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -27,15 +24,13 @@ class ContactViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrAdmin]
     throttle_classes = [ContactThrottle]
     def get_queryset(self):
-        return Contact.objects.filter(user=self.request.user)
+        queryset = Contact.objects.filter(user=self.request.user)
+        contact_param = self.request.query_params.get('contact', None)
+        if contact_param is not None:
+            queryset = queryset.filter(username__icontains=contact_param)
+        return queryset
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    def get_throttles(self):
-        if self.action == 'list' or self.action == 'retrieve':
-            return [ContactGetThrottle]
-        
-        if self.action == 'create':
-            return [ContactPostThrottle]
         

@@ -14,8 +14,4 @@ class ContactThrottle(UserRateThrottle):
             self.num_requests, self.duration = self.parse_rate(self.rate)
         return super().allow_request(request, view)
     
-class ContactGetThrottle(UserRateThrottle):
-    scope = 'contact-get'
 
-class ContactPostThrottle(UserRateThrottle):
-    scope = 'contact-post'
