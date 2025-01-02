@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import filters
 from contacts_app.models import Contact
 from .serializers import ContactSerializer
 from user_auth_app.api.permissions import IsOwnerOrAdmin
@@ -23,6 +24,10 @@ class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
     permission_classes = [IsOwnerOrAdmin]
     throttle_classes = [ContactThrottle]
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['username']
+    ordering = ['username']
+    
     def get_queryset(self):
         queryset = Contact.objects.filter(user=self.request.user)
         contact_param = self.request.query_params.get('contact', None)
