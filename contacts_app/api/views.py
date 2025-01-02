@@ -11,13 +11,22 @@ User = get_user_model()
 
 class ContactViewSet(viewsets.ModelViewSet):
     """A viewset for viewing and editing contact instances.
+
     Attributes:
         queryset (QuerySet): The queryset of all contact objects.
         serializer_class (Serializer): The serializer class for contact objects.
         permission_classes (list): The list of permission classes that apply to this viewset.
+        throttle_classes (list): The list of throttle classes for rate limiting.
+        filter_backends (list): The list of filter backends for queryset filtering.
+        filterset_fields (list): The fields that can be used for filtering.
+        search_fields (list): The fields that can be used for searching.
+        ordering_fields (list): The fields that can be used for ordering.
+        ordering (list): The default ordering for the queryset.
+
     Methods:
         get_queryset(self):
-            Returns a queryset of contact objects filtered by the current user.
+            Returns a queryset of contact objects filtered by the current user
+            and optionally by a 'contact' query parameter.
         perform_create(self, serializer):
             Saves a new contact object with the current user as the owner.
     """
