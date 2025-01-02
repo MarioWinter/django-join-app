@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from contacts_app.models import Contact
 from .serializers import ContactSerializer
@@ -24,7 +25,9 @@ class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
     permission_classes = [IsOwnerOrAdmin]
     throttle_classes = [ContactThrottle]
-    filter_backends = [filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['username']
+    search_fields = ['username']
     ordering_fields = ['username']
     ordering = ['username']
     
